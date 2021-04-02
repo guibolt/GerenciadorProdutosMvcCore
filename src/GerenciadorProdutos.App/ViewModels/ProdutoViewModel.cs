@@ -29,7 +29,7 @@ namespace GerenciadorProdutos.App.ViewModels
 
         public string Imagem { get; set; }
 
-       // [Moeda]
+      //  [Moeda]
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public decimal Valor { get; set; }
 
@@ -40,8 +40,6 @@ namespace GerenciadorProdutos.App.ViewModels
         public bool Ativo { get; set; }
 
         public FornecedorViewModel Fornecedor { get; set; }
-
-        public IEnumerable<FornecedorViewModel> Fornecedores { get; set; }
-
+        public IEnumerable<FornecedorViewModel> Fornecedores { get;  set; }
     }
 }

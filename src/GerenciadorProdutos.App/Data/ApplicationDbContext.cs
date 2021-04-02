@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using GerenciadorProdutos.App.ViewModels;
 
 namespace GerenciadorProdutos.App.Data
 {
@@ -12,5 +10,6 @@ namespace GerenciadorProdutos.App.Data
             : base(options)
         {
         }
+        public DbSet<GerenciadorProdutos.App.ViewModels.EnderecoViewModel> EnderecoViewModel { get; set; }
     }
 }

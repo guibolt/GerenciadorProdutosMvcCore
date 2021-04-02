@@ -26,6 +26,6 @@ namespace GerenciadorProdutos.App.ViewModels
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }
 
-        public IEnumerable<ProdutoViewModel> Produtos { get; set; }
+        public IEnumerable<ProdutoViewModel> ProdutosViewModels { get; set; }
     }
 }
