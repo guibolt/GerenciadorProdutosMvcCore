@@ -21,7 +21,5 @@ namespace GerenciadorProdutos.Data.Repository
         public async Task<Fornecedor> ObterFornecedorProdutosEndereco(Guid id) => await Db.Fornecedores.AsNoTracking()
                                                                                         .Include(c => c.Produtos)
                                                                                         .Include(c => c.Endereco).FirstOrDefaultAsync(c => c.Id == id);
-
-
     }
 }

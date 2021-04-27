@@ -26,5 +26,8 @@ namespace GerenciadorProdutos.Data.Repository
         }
 
         public async Task<IEnumerable<Produto>> ObterProdutosPorFornecedor(Guid fornecedorId) => await Buscar(p => p.FornecedorId == fornecedorId);
+
+        public override async Task<List<Produto>> ObterTodos() => await Db.Produtos.Include(x => x.Fornecedor).ToListAsync();
+        
     }
 }

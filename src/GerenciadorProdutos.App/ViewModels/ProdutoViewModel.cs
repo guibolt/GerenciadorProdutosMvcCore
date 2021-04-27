@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GerenciadorProdutos.App.Extensions;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,12 +30,12 @@ namespace GerenciadorProdutos.App.ViewModels
 
         public string Imagem { get; set; }
 
-      //  [Moeda]
+        [Moeda]
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public decimal Valor { get; set; }
 
         [ScaffoldColumn(false)]
-        public DateTime DataCadastro { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.Now;
 
         [DisplayName("Ativo?")]
         public bool Ativo { get; set; }

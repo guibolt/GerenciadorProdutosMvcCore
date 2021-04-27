@@ -6,6 +6,8 @@ using GerenciadorProdutos.App.ViewModels;
 using GerenciadorProdutos.Business.Intefaces;
 using AutoMapper;
 using GerenciadorProdutos.Business.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace GerenciadorProdutos.App.Controllers
 {
@@ -54,6 +56,13 @@ namespace GerenciadorProdutos.App.Controllers
             if (!ModelState.IsValid)
                 return View(produtoViewModel);
 
+            var imgPreFixo = $"{Guid.NewGuid()}_";
+            
+            if (!await UploadArquivo(produtoViewModel.ImagemUpload, imgPreFixo))
+                return View(produtoViewModel);
+
+            produtoViewModel.Imagem = $"{imgPreFixo}{produtoViewModel.ImagemUpload.FileName}";
+
             var produto = _mapper.Map<Produto>(produtoViewModel);
             await _produtoRepository.Adicionar(produto);
 
@@ -78,8 +87,26 @@ namespace GerenciadorProdutos.App.Controllers
             if (id != produtoViewModel.Id)
                 return NotFound();
 
+            var produtoAtualizacao = await ObterProduto(id);
+            produtoViewModel.Fornecedor = produtoAtualizacao.Fornecedor;
+            produtoViewModel.Imagem = produtoViewModel.Imagem;
+
             if (!ModelState.IsValid)
                 return View(produtoViewModel);
+
+            if (produtoViewModel.ImagemUpload != null)
+            {
+                var imgPrefixo = Guid.NewGuid() + "_";
+
+                if (!await UploadArquivo(produtoViewModel.ImagemUpload, imgPrefixo))
+                    return View(produtoViewModel);
+                
+                produtoAtualizacao.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
+            }
+            produtoAtualizacao.Nome = produtoViewModel.Nome;
+            produtoAtualizacao.Descricao = produtoViewModel.Descricao;
+            produtoAtualizacao.Valor = produtoViewModel.Valor;
+            produtoAtualizacao.Ativo = produtoViewModel.Ativo;
 
             var produto = _mapper.Map<Produto>(produtoViewModel);
             await _produtoRepository.Atualizar(produto);
@@ -128,6 +155,25 @@ namespace GerenciadorProdutos.App.Controllers
             produtoViewModel.Fornecedores = _mapper.Map<IEnumerable<FornecedorViewModel>>(fornecedores);
 
             return produtoViewModel;
+        }
+        private async Task<bool> UploadArquivo(IFormFile arquivo, string imgPrefixo)
+        {
+            if (arquivo.Length <= 0) return false;
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgPrefixo + arquivo.FileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                ModelState.AddModelError(string.Empty, "Já existe um arquivo com este nome!");
+                return false;
+            }
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await arquivo.CopyToAsync(stream);
+            }
+
+            return true;
         }
     }
 }
