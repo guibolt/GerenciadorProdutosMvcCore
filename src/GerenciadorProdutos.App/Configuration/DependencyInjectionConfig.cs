@@ -1,5 +1,7 @@
 ﻿using GerenciadorProdutos.App.Extensions;
 using GerenciadorProdutos.Business.Intefaces;
+using GerenciadorProdutos.Business.Notifications;
+using GerenciadorProdutos.Business.Services;
 using GerenciadorProdutos.Data.Context;
 using GerenciadorProdutos.Data.Repository;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -17,9 +19,9 @@ namespace GerenciadorProdutos.App.Configuration
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
 
-            // services.AddScoped<INotificador, Notificador>();
-            // services.AddScoped<IFornecedorService, FornecedorService>();
-            //  services.AddScoped<IProdutoService, ProdutoService>();
+            services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<IFornecedorService, FornecedorService>();
+            services.AddScoped<IProdutoService, ProdutoService>();
 
             return services;
         }

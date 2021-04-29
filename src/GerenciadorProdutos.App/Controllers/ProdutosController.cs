@@ -15,12 +15,13 @@ namespace GerenciadorProdutos.App.Controllers
     {
         private readonly IProdutoRepository _produtoRepository;
         private readonly IFornecedorRepository _fornecedorRepository;
-
+        private readonly IProdutoService _produtoService;
         public ProdutosController(IProdutoRepository produtoRepository, IFornecedorRepository fornecedorRepository,
-                         IMapper mapper) : base(mapper)
+            IProdutoService produtoService, INotificador notificador, IMapper mapper) : base(mapper, notificador)
         {
             _produtoRepository = produtoRepository;
             _fornecedorRepository = fornecedorRepository;
+            _produtoService = produtoService;
         }
 
         [Route("lista-de-produtos")]
@@ -66,7 +67,9 @@ namespace GerenciadorProdutos.App.Controllers
             produtoViewModel.Imagem = $"{imgPreFixo}{produtoViewModel.ImagemUpload.FileName}";
 
             var produto = _mapper.Map<Produto>(produtoViewModel);
-            await _produtoRepository.Adicionar(produto);
+            await _produtoService.Adicionar(produto);
+
+            if (!OperacaoValida()) return View(produto);
 
             return RedirectToAction("Index");
 
@@ -112,7 +115,9 @@ namespace GerenciadorProdutos.App.Controllers
             produtoAtualizacao.Ativo = produtoViewModel.Ativo;
 
             var produto = _mapper.Map<Produto>(produtoViewModel);
-            await _produtoRepository.Atualizar(produto);
+            await _produtoService.Atualizar(produto);
+
+            if (!OperacaoValida()) return View(produto);
 
             return RedirectToAction("Index");
         }
@@ -138,8 +143,11 @@ namespace GerenciadorProdutos.App.Controllers
             if (produtoViewModel == null)
                 return NotFound();
 
-            await _produtoRepository.Remover(id);
+            await _produtoService.Remover(id);
 
+            if (!OperacaoValida()) return View(produtoViewModel);
+
+            TempData["Sucesso"] = "Produto excluido com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 
