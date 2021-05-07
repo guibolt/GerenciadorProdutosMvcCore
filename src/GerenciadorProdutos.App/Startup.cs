@@ -12,7 +12,7 @@ namespace GerenciadorProdutos.App
 {
     public class Startup
     {
-            public Startup(IConfiguration configuration) => Configuration = configuration;
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
@@ -44,7 +44,8 @@ namespace GerenciadorProdutos.App
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/erro/500");
+                app.UseStatusCodePagesWithRedirects("/erro/{0}");
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -52,7 +53,7 @@ namespace GerenciadorProdutos.App
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseAuthentication(); 
             app.UseAuthorization();
 
             app.UseGlobalizationConfig();

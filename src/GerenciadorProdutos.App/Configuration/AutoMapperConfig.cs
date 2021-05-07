@@ -11,6 +11,7 @@ namespace GerenciadorProdutos.App.Configuration
             CreateMap<Fornecedor, FornecedorViewModel>().ReverseMap();
             CreateMap<Endereco, EnderecoViewModel>().ReverseMap();
             CreateMap<Produto, ProdutoViewModel>().ReverseMap();
+
         }
     }
 }
