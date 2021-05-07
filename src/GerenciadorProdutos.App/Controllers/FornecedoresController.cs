@@ -50,7 +50,6 @@ namespace GerenciadorProdutos.App.Controllers
         public IActionResult Create() => View();
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [ClaimsAuthorize("Fornecedor", "Adicionar")]
         [Route("novo-fornecedor")]
         public async Task<IActionResult> Create(FornecedorViewModel fornecedorViewModel)
@@ -79,7 +78,6 @@ namespace GerenciadorProdutos.App.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [ClaimsAuthorize("Fornecedor", "Editar")]
         [Route("editar-fornecedor/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id, FornecedorViewModel fornecedorViewModel)
@@ -110,7 +108,6 @@ namespace GerenciadorProdutos.App.Controllers
         }
 
         [Route("excluir-fornecedor/{id:guid}")]
-        [ClaimsAuthorize("Fornecedor", "Excluir")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

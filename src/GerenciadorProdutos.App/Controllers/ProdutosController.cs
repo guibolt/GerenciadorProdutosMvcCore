@@ -57,7 +57,6 @@ namespace GerenciadorProdutos.App.Controllers
         [ClaimsAuthorize("Produto", "Adicionar")]
         [Route("novo-produto")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProdutoViewModel produtoViewModel)
         {
             produtoViewModel = await PopularFornecedores(produtoViewModel);
@@ -94,7 +93,6 @@ namespace GerenciadorProdutos.App.Controllers
 
         [ClaimsAuthorize("Produto", "Editar")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("editar-produto/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id, ProdutoViewModel produtoViewModel)
         {
@@ -143,7 +141,6 @@ namespace GerenciadorProdutos.App.Controllers
 
         [ClaimsAuthorize("Produto", "Excluir")]
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         [Route("excluir-produto/{id:guid}")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
